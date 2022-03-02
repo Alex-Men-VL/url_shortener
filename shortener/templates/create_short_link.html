@@ -2,7 +2,7 @@
 {% load rest_framework %}
 
 {% block content %}
-  <div class="container col-4 mt-5">
+  <div class="container col-6 mt-5">
     <div class="form-horizontal justify-content-center">
       <form method="post">
         {% csrf_token %}
@@ -12,4 +12,14 @@
       </form>
     </div>
   </div>
+  {% if short_url %}
+    <div class="container col-6 mt-5">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Сокращенное URL</h5>
+          <p class="card-text"><a href="{{ short_url }}">{{ short_url }}</a></p>
+        </div>
+      </div>
+    </div>
+  {% endif %}
 {% endblock %}

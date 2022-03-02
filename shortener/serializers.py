@@ -1,5 +1,6 @@
 import requests
 from rest_framework.exceptions import ValidationError
+from rest_framework.validators import UniqueValidator
 
 from .models import Url, generate_hash
 from rest_framework import serializers
@@ -10,6 +11,7 @@ class UrlSerializer(serializers.ModelSerializer):
         max_length=100,
         label='Кастомная ссылка',
         required=False,
+        validators=[UniqueValidator(queryset=Url.objects.all())],
         style={
             'placeholder': 'Необязательное поле'
         }
@@ -22,6 +24,9 @@ class UrlSerializer(serializers.ModelSerializer):
             'long_url': {
                 'validators': []
             },
+            # 'url_hash': {
+            #     'required': False
+            # },
             'short_url': {
                 'read_only': True
             }
@@ -44,5 +49,10 @@ class UrlSerializer(serializers.ModelSerializer):
         if not response.ok:
             raise ValidationError(
                 {'long_url': 'Некорректная ссылка'}
+            )
+        url_hash = attrs.get('url_hash')
+        if url_hash and len(url_hash) < 7:
+            raise ValidationError(
+                {'url_hash': 'Идентификатор слишком короткий'}
             )
         return attrs
