@@ -1,9 +1,9 @@
 import requests
+from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.validators import UniqueValidator
 
 from .models import Url, generate_hash
-from rest_framework import serializers
 
 
 class UrlSerializer(serializers.ModelSerializer):
@@ -24,9 +24,6 @@ class UrlSerializer(serializers.ModelSerializer):
             'long_url': {
                 'validators': []
             },
-            # 'url_hash': {
-            #     'required': False
-            # },
             'short_url': {
                 'read_only': True
             }
