@@ -91,3 +91,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+HOST_NAME = env.str('HOST_NAME', 'http://127.0.0.1:8000/')
