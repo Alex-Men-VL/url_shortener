@@ -8,11 +8,16 @@ from rest_framework import serializers
 class UrlSerializer(serializers.ModelSerializer):
     class Meta:
         model = Url
-        fields = ('long_url', 'short_url')
-        read_only_fields = ('short_url',)
+        fields = ('long_url', 'short_url', 'url_hash')
         extra_kwargs = {
             'long_url': {
                 'validators': []
+            },
+            'url_hash': {
+                'required': False
+            },
+            'short_url': {
+                'read_only': True
             }
         }
 
@@ -21,7 +26,8 @@ class UrlSerializer(serializers.ModelSerializer):
         url = Url.objects.filter(long_url=long_url)
         if url.exists():
             return url.first()
-        url_hash = generate_hash()
+        if not (url_hash := validated_data.get('url_hash')):
+            url_hash = generate_hash()
         url = Url.objects.create(long_url=long_url, url_hash=url_hash)
         url.create_short_url()
         return url
