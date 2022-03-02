@@ -1,15 +1,35 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.views import View
 from rest_framework import viewsets, mixins
+from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Url
 from .serializers import UrlSerializer
 
 
-class CreateShortURL(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class CreateShortURLAPI(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = Url.objects.all()
     serializer_class = UrlSerializer
+
+
+class CreateShortURL(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'create_short_link.html'
+
+    def get(self, request):
+        serializer = UrlSerializer()
+        return Response({'serializer': serializer})
+
+    def post(self, request):
+        serializer = UrlSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({'serializer': serializer})
+        serializer.save()
+        short_link = serializer.data.get('short_url')
+        return Response({'serializer': serializer, 'short_link': short_link})
 
 
 class RedirectShortUrl(APIView):

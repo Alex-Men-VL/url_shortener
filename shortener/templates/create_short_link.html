@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load rest_framework %}
+
+{% block content %}
+  <div class="container col-4 mt-5">
+    <div class="form-horizontal justify-content-center">
+      <form method="post">
+        {% csrf_token %}
+        {% render_form serializer %}
+        <br>
+        <button class="btn btn-outline-success" type="submit">Create</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

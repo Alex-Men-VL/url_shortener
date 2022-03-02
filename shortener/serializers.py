@@ -6,15 +6,21 @@ from rest_framework import serializers
 
 
 class UrlSerializer(serializers.ModelSerializer):
+    url_hash = serializers.CharField(
+        max_length=100,
+        label='Кастомная ссылка',
+        required=False,
+        style={
+            'placeholder': 'Необязательное поле'
+        }
+    )
+
     class Meta:
         model = Url
         fields = ('long_url', 'short_url', 'url_hash')
         extra_kwargs = {
             'long_url': {
                 'validators': []
-            },
-            'url_hash': {
-                'required': False
             },
             'short_url': {
                 'read_only': True
