@@ -5,9 +5,9 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /usr/src/app
 
-RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev \
-    && apk install -y netcat
+RUN apt-get update \
+    && apt-get -y install postgresql-dev gcc python3-dev musl-dev \
+    && apt-get install -y netcat
 
 RUN pip install --upgrade pip
 COPY requirements.txt .
