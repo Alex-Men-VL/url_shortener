@@ -8,6 +8,6 @@ router.register(r'create', CreateShortURLAPI)
 
 urlpatterns = [
     path('api/v1/', include(router.urls)),
-    path('create/', CreateShortURL.as_view(), name='create_short_link'),
-    path('<str:url_hash>', RedirectShortUrl.as_view()),
+    path('', CreateShortURL.as_view(), name='create_short_link'),
+    path('<str:url_hash>', RedirectShortUrl.as_view(), name='long_url_redirect'),
 ]
